@@ -1,0 +1,16 @@
+{% extends "base.html" %}{% block title%}Renew Password{% endblock %}
+{% block content %}
+<h1 align="center">Renew Your Password</h1>
+<form action="" method="POST">
+    <label for="email" class="form-label">Email</label>
+    <input type="email" class="form-control mb-3" id="email" name="email">
+
+    <label for="newPassword" class="form-label">New Password</label>
+    <input type="password" name="newPassword" id="newPassword" class="form-control mb-3">
+
+    <label for="newPassword2" class="form-label">Confirm New Password</label>
+    <input type="password" name="newPassword2" id="newPassword2" class="form-control">
+    <br>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% endblock%}
