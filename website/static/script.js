@@ -16,3 +16,17 @@ function shareNote(noteId){
         window.location.href= "/";
     });
 }
+
+function setEnabled(){
+    firstName = document.getElementById('firstName');
+    lastName = document.getElementById('lastName');
+    age = document.getElementById('age');
+    address = document.getElementById('address');
+    btnUpdate = document.getElementById('btnUpdate');
+
+    firstName.disabled = false;
+    lastName.disabled = false;
+    age.disabled = false;
+    address.disabled = false;
+    btnUpdate.disabled = false;
+}

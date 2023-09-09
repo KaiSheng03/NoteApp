@@ -1,31 +1,37 @@
 {% extends "base.html" %}{% block title%}Login{% endblock %}
 {% block content %}
-<h1 align="center">Profile</h1>
-<form action="" method="POST">
-    <div class="form-group mb-2">
-        <label for="firstName" class="form-label">First Name</label>
-        <input type="text" name="firstName" class="form-control" id="firstName" value="{{user.first_name}}">
-    </div>
+<div class="login" id="loginPage">
+    <h1 align="center">Profile</h1>
+    <form action="" method="POST">
+        <div class="form-group mb-2">
+            <label for="firstName" class="form-label">First Name</label>
+            <input type="text" name="firstName" class="form-control" id="firstName" value="{{user.first_name}}" disabled>
+        </div>
 
-    <div class="form-group mb-2">
-        <label for="lastName" class="form-label">Last Name</label>
-        <input type="text" name="lastName" class="form-control" id="lastName" value="{{user.last_name}}">
-    </div>
+        <div class="form-group mb-2">
+            <label for="lastName" class="form-label">Last Name</label>
+            <input type="text" name="lastName" class="form-control" id="lastName" value="{{user.last_name}}" disabled>
+        </div>
 
-    <div class="form-group mb-2">
-        <label for="age" class="form-label">Age</label>
-        <input type="number" name="age" min="6" class="form-control" id="age" value="{{user.age}}">
-    </div>
+        <div class="form-group mb-2">
+            <label for="age" class="form-label">Age</label>
+            <input type="number" name="age" min="6" class="form-control" id="age" value="{{user.age}}" disabled>
+        </div>
 
-    <div class="form-group mb-2">
-        <label for="email" class="form-label">Email</label>
-        <input type="text" name="email" class="form-control" id="email" disabled value="{{user.email}}">
-    </div>
+        <div class="form-group mb-2">
+            <label for="email" class="form-label">Email</label>
+            <input type="text" name="email" class="form-control" id="email" disabled value="{{user.email}}" disabled>
+        </div>
 
-    <div class="form-group mb-3">
-        <label for="address" class="form-label">Address</label>
-        <textarea name="address" class="form-control" id="address" cols="30" rows="3">{{user.address}}</textarea>
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+        <div class="form-group mb-3">
+            <label for="address" class="form-label">Address</label>
+            <textarea name="address" class="form-control" id="address" cols="30" rows="3" disabled>{{user.address}}</textarea>
+        </div>
+
+        <div class="form-group mb-3">
+            <a href="#" onclick="setEnabled()">Update profile</a>
+        </div>
+        <button type="submit" class="btn btn-primary" id="btnUpdate" disabled>Submit</button>
+    </form>
+</div>
 {% endblock %}

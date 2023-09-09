@@ -1,41 +1,48 @@
 {% extends "base.html" %}{% block title%}Changed{% endblock %}
 {% block content %}
 <h1>Notes</h1>
-<ul class="list-group list-group-flush" id="notes">
-    {% for note in user.notes%}
-    <li class="list-group-item mb-3">
-        {{note.data}}
-        <!-- Button trigger modal -->
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-share-fill ms-3 me-3" id="shareIcon" data-bs-toggle='modal' data-bs-target="#exampleModal" viewBox="0 0 16 16">
-            <path d="M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5z"/>
-          </svg>
-
+<div>
+    <h4>Your Notes</h4>
+    <ul class="list-group list-group-flush" id="notes">
+        {% for note in user.notes%}
         <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                <h1 class="modal-title fs-5 text-dark" id="exampleModalLabel">Share This Note</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="email" name="shareEmail" id="shareEmail">
-                    <button type="button" class="btn btn-primary" onclick="shareNote('{{note.id}}')">Submit</button>
+                    <p class="text-dark">Please enter an email to share this note.</p>
+                    <input type="email" name="shareEmail" id="shareEmail" placeholder="abc@gmail.com">
+                    <br><br>
+                    <button type="button" class="btn btn-primary" onclick="shareNote('{{note.id}}')">Share</button>
                 </div>
             </div>
             </div>
         </div>
-        <button type="button" class="btn-close" aria-label="Close" onclick="deleteNote('{{note.id}}')"></button>
-    </li>
-    {% endfor%}
-</ul>    
-<form action="" method="POST">
-    <textarea name="note" id="note" cols="30" rows="10" class="form-control"></textarea>
-    <br>
-    <div>
-        <button type="submit" class="btn btn-primary">
-            Add Note
-        </button>
-    </div>
-</form>
+        <li class="list-group-item mb-3">
+            {{note.data}}
+            <!-- Button trigger modal -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-share-fill ms-3 me-3" id="shareIcon" data-bs-toggle='modal' data-bs-target="#exampleModal" viewBox="0 0 16 16">
+                <path d="M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5z"/>
+            </svg>
+            <button type="button" class="btn-close" aria-label="Close" onclick="deleteNote('{{note.id}}')"></button>
+        </li>
+        {% endfor%}
+    </ul>
+</div>
+<div>
+    <h4>Write your notes here</h4>
+    <form action="" method="POST">
+        <textarea name="note" id="note" cols="30" rows="5" class="form-control"></textarea>
+        <br>
+        <div>
+            <button type="submit" class="btn btn-primary">
+                Add Note
+            </button>
+        </div>
+    </form>
+</div>
 {% endblock %}

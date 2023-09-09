@@ -28,3 +28,14 @@ h3{
 #shareIcon{
     cursor: pointer;
 }
+
+#loginPage{
+    position: relative;
+    top: 5%;
+}
+
+#flash{
+    position: absolute;
+    top: 0%;
+    left: 7%;
+}
