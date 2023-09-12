@@ -15,6 +15,25 @@
     <div class="form-group mb-3">
         <a href='/renew'>Forgot your password?</a>
     </div>
-    <button type="submit" class="btn btn-primary">Login</button>
+
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#securityModal">Login</button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="securityModal" tabindex="-1" aria-labelledby="securityModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h1 class="modal-title fs-5 text-dark" id="securityModalLabel">Security Key</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-dark">Please enter your 4 digit security key.</p>
+                <input type="text" name="security" id="security" maxlength="4" placeholder="1234">
+                <br><br>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </div>
+        </div>
+        </div>
+    </div>
 </form>
 {% endblock %}

@@ -16,4 +16,5 @@ class User(db.Model, UserMixin):
     last_name = db.Column(db.String(150))
     age = db.Column(db.Integer)
     address = db.Column(db.String(150))
+    security_key = db.Column(db.String(150))
     notes = db.relationship('Note')

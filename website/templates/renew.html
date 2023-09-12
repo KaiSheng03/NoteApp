@@ -8,7 +8,7 @@
     </div>
 
     <div class="form-group mb-3">
-        <label for="newPassword" class="form-label">New Password</label>
+        <label for="password" class="form-label">New Password</label>
         <div class="d-flex align-items-center">
             <input type="password" class="form-control" id="password" name="newPassword" style="width:50%;" onkeyup="passwordValidate()">
             <label class="ms-3" id="errorBox"></label>
@@ -19,7 +19,25 @@
         <label for="newPassword2" class="form-label">Confirm New Password</label>
         <input type="password" name="newPassword2" id="newPassword2" class="form-control" style="width: 50%;">
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="securityModal" tabindex="-1" aria-labelledby="securityModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h1 class="modal-title fs-5 text-dark" id="securityModalLabel">Security Key</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-dark">Please enter your 4 digit security key.</p>
+                <input type="text" name="security" id="security" maxlength="4" placeholder="1234">
+                <br><br>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </div>
+        </div>
+        </div>
+    </div>
     <br>
-    <button type="submit" class="btn btn-primary" id="btnSignUp" disabled>Update</button>
+    <button type="button" class="btn btn-primary" id="btnSignUp" disabled data-bs-toggle="modal" data-bs-target="#securityModal">Update</button>
 </form>
 {% endblock%}

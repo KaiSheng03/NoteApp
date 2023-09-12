@@ -11,15 +11,22 @@ def login():
     if request.method == 'POST':
         email  = request.form.get('email')
         password = request.form.get('password')
-        
+        securityKey = request.form.get('security')
+
         user = User.query.filter_by(email=email).first()
+        security = User.query.get
         if user:
-            if check_password_hash(user.password, password):
+            if check_password_hash(user.password, password) == False:
+                flash('Incorrect password', category='error')
+
+            elif securityKey != user.security_key:
+                flash('Incorrect security key', category='error')
+            
+            else:
                 flash('Logged in successfully!', category='success')
                 login_user(user, remember=True)
                 return redirect(url_for("views.home"))
-            else:
-                flash('Incorrect password', category='error')
+            
         else:
             flash('Email does not exist', category='error')
     return render_template("login.html", user=current_user)
@@ -37,6 +44,7 @@ def signup():
         firstName = request.form.get('firstName')
         password1 = request.form.get('password')
         password2 = request.form.get('password2')
+        securityKey = request.form.get('security')
 
         user = User.query.filter_by(email=email).first()
         if user:
@@ -57,8 +65,11 @@ def signup():
         elif password1 != password2:
             flash("The passwords don't match", category='error')
 
+        elif len(securityKey) == 0:
+            flash("Please enter a 4 digit security key", category='error')
+
         else:
-            new_user = User(email=email, first_name=firstName, password=generate_password_hash(password1, method='sha256'))
+            new_user = User(email=email, first_name=firstName, password=generate_password_hash(password1, method='sha256'), security_key=securityKey)
             db.session.add(new_user)
             db.session.commit()
             login_user(new_user, remember=True)
@@ -73,14 +84,20 @@ def renew():
         email = request.form.get('email')
         newPassword1 = request.form.get('newPassword')
         newPassword2 = request.form.get('newPassword2')
-        
+        securityKey = request.form.get('security')
+
         user = User.query.filter_by(email=email).first()
+        security = user.security_key
         if user:
-            if newPassword1 == newPassword2:
+            if(securityKey!=security):
+                flash("Incorrect security key", category='error')
+
+            elif newPassword1 == newPassword2:
                 user.password = generate_password_hash(newPassword1, method='sha256')
                 db.session.commit()
                 flash("Password updated successfully", category='success')
                 return redirect(url_for('auth.login'))
+            
             else:
                 flash("The passwords don't match", category='error')
 
