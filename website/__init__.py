@@ -1,16 +1,15 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from flask_pymongo import PyMongo
 from os import path
 from flask_login import LoginManager
+from bson import ObjectId
 
-db = SQLAlchemy()
-DB_NAME = "database2.db"
-
+mongo = PyMongo()
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'ABCDEFGHI'
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
-    db.init_app(app)
+    app.config['MONGO_URI'] = "mongodb+srv://kai:KZqXP6fcS6Q73Ves@cluster0.mvr574p.mongodb.net/database?retryWrites=true&w=majority"
+    mongo.init_app(app)
     
     from .views import views
     from .auth import auth
@@ -19,7 +18,6 @@ def create_app():
     app.register_blueprint(auth, url_prefix='/')
 
     from .models import User, Note
-    create_database(app)
 
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
@@ -27,12 +25,6 @@ def create_app():
 
     @login_manager.user_loader
     def load_user(id):
-        return User.query.get(int(id))
+        return mongo.db.User.find_one({'_id': id})
 
     return app
-
-def create_database(app):
-    if not path.exists('website/' + DB_NAME):
-        with app.app_context():
-            db.create_all()
-        print("Created Database!")

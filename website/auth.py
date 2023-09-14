@@ -1,6 +1,7 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask import Blueprint, render_template, request, flash, redirect, url_for, session
 from .models import User
-from . import db
+from flask_pymongo import PyMongo
+from . import mongo
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 
@@ -13,13 +14,14 @@ def login():
         password = request.form.get('password')
         securityKey = request.form.get('security')
 
-        user = User.query.filter_by(email=email).first()
-        security = User.query.get
+        user = mongo.db.User.find_one({"email":email})
+        security = user["securityKey"]
         if user:
-            if check_password_hash(user.password, password) == False:
+            session['user_id'] = user["id"]
+            if check_password_hash(user["password"], password) == False:
                 flash('Incorrect password', category='error')
 
-            elif securityKey != user.security_key:
+            elif securityKey != security:
                 flash('Incorrect security key', category='error')
             
             else:
@@ -46,7 +48,7 @@ def signup():
         password2 = request.form.get('password2')
         securityKey = request.form.get('security')
 
-        user = User.query.filter_by(email=email).first()
+        user = mongo.db.User.find_one({"email":email})
         if user:
             flash("Email already exists", category='error')
 
@@ -69,9 +71,8 @@ def signup():
             flash("Please enter a 4 digit security key", category='error')
 
         else:
-            new_user = User(email=email, first_name=firstName, password=generate_password_hash(password1, method='sha256'), security_key=securityKey)
-            db.session.add(new_user)
-            db.session.commit()
+            new_user = {"email": email, "firstName": firstName, "password": password1, "securityKey": securityKey}
+            mongo.db.User.insert_one(new_user)
             login_user(new_user, remember=True)
             flash("Account created", category='success')
             return redirect(url_for('views.home'))
@@ -86,15 +87,14 @@ def renew():
         newPassword2 = request.form.get('newPassword2')
         securityKey = request.form.get('security')
 
-        user = User.query.filter_by(email=email).first()
-        security = user.security_key
+        user = mongo.db.User.find_one({"email":email})
+        security = user["securityKey"]
         if user:
             if(securityKey!=security):
                 flash("Incorrect security key", category='error')
 
             elif newPassword1 == newPassword2:
-                user.password = generate_password_hash(newPassword1, method='sha256')
-                db.session.commit()
+                user["securityKey"] = generate_password_hash(newPassword1, method='sha256')
                 flash("Password updated successfully", category='success')
                 return redirect(url_for('auth.login'))
             
