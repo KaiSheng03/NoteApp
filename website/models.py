@@ -1,7 +1,5 @@
 from . import mongo
 from flask_login import UserMixin
-from sqlalchemy.sql import func
-from bson import ObjectId
 
 class User(UserMixin):
     def __init__(self, _id, email, password, first_name, last_name, age, address, security_key):

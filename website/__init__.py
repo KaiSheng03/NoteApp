@@ -1,10 +1,7 @@
 from flask import Flask
 from flask_pymongo import PyMongo
-from os import path
 from flask_login import LoginManager
 from bson import ObjectId
-from bson.errors import InvalidId
-import json
 
 mongo = PyMongo()
 def create_app():

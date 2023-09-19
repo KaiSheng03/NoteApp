@@ -1,7 +1,6 @@
 from flask import Blueprint, request, flash, render_template, jsonify
 from flask_login import login_required, current_user
 from .models import Note, User  # Import your PyMongo models
-from . import mongo  # Import the PyMongo instance
 import json
 from bson import ObjectId
 
