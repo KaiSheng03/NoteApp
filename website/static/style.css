@@ -22,6 +22,12 @@ body{
     font-family: 'Poppins';
 }
 
+#content{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .navbar{
     position: absolute;
     top: 0;
@@ -38,10 +44,6 @@ a:hover{
     color: #2B2B2B;
 }
 
-h3{
-    font-size: 30px;
-}
-
 #shareIcon{
     cursor: pointer;
 }
@@ -52,6 +54,16 @@ h3{
     border-radius: 20px;
     width: 60%;
     padding: 30px;
+}
+
+#signUpPage{
+    position: absolute;
+    top: 10%;
+    background-color: white;
+    border-radius: 20px;
+    color: black;
+    padding: 30px;
+    width: 60%;
 }
 
 #renewPage{
@@ -77,6 +89,7 @@ h3{
     position: absolute;
     top: 0%;
     width: 90%;
+    
 }
 
 #notesPage{
@@ -103,16 +116,16 @@ h3{
     width: 20%;
     margin-left: 20px;
     border-radius: 50px;
-    background-color: orangered;
+    background-color: #FB500A;
     outline: none;
     border: none;
+    transition: 0.5s;
+}
+
+#btnAddNote:hover{
+    background-color: #D14004;
 }
 
 #notes{
     width: 80%;
-}
-
-#signUpPage{
-    position: absolute;
-    top: 15%;
 }

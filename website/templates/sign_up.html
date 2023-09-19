@@ -1,33 +1,33 @@
 {% extends "base.html" %}{% block title%}Sign Up{% endblock %}
 {% block content %}
 <div class="container" id="signUpPage">
-    <form action="" method="POST">
+    <form action="" method="POST" class="d-flex flex-column align-items-center">
         <h1 align="center">Sign Up</h1>
-        <div class="form-group mb-3">
+        <div class="form-group mb-3" style="width: 80%;">
             <label for="email" class="form-label">Email Address</label>
             <input type="email" class="form-control" id="email" name="email" placeholder="Enter email">
         </div>
-        <div class="form-group mb-3">
+        <div class="form-group mb-3" style="width: 80%;">
             <label for="firstName" class="form-label">First Name</label>
             <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Enter first name">
         </div>
-        <div class="form-group mb-3">
+        <div class="form-group mb-3" style="width: 80%;">
             <label for="password" class="form-label">Password</label>
-            <div class="d-flex align-items-center">
-                <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" style="width:50%;" onkeyup="passwordValidate()">
+            <div>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" onkeyup="passwordValidate()">
                 <label class="ms-3" id="errorBox"></label>
             </div>
         </div>
-        <div class="form-group mb-3">
+        <div class="form-group mb-3" style="width: 80%;">
             <label for="password2" class="form-label">Confirm Password</label>
-            <input type="password" class="form-control" id="password2" name="password2" placeholder="Confirm Password" style="width:50%;">
+            <input type="password" class="form-control" id="password2" name="password2" placeholder="Confirm Password">
         </div>
-        <div class="form-group mb-3">
+        <div class="form-group mb-3" style="width: 80%;">
             <label for="security" class="form-label">Security Key</label>
             <input type="text" class="form-control" id="security" name="security" placeholder="Enter 4 digit security key" maxlength="4" style="width:50%;">
         </div>
         <br>
-        <button type="submit" class="btn btn-primary mb-3" id="btnSignUp" disabled>Sign Up</button>
+        <button type="submit" class="btn btn-primary" id="btnSignUp" disabled>Sign Up</button>
     </form>
 </div>
 {% endblock %}

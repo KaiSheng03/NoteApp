@@ -33,14 +33,14 @@
                 {% if messages %}
                     {% for category, message in messages %}
                         {% if category == 'error' %}
-                        <div class="alert alert-danger alter-dismissable fade show" id="alertMessage">
+                        <div class="alert alert-danger alter-dismissable fade show d-flex justify-content-between" id="alertMessage">
                             {{message}}
                             <div class="d-flex justify-content-end">
                                 <button type="button" class="btn btn-close" data-bs-dismiss="alert"></button>
                             </div>
                         </div>
                         {% else %}
-                        <div class="alert alert-success alter-dismissable fade show" id="alertMessage">
+                        <div class="alert alert-success alter-dismissable fade show d-flex justify-content-between" id="alertMessage">
                             {{message}}
                             <div class="d-flex justify-content-end">
                                 <button type="button" class="btn btn-close" data-bs-dismiss="alert"></button>

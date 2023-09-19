@@ -1,83 +1,72 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for, session
+from flask import Blueprint, render_template, request, flash, redirect, url_for
 from .models import User
 from flask_pymongo import PyMongo
 from . import mongo
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
+from bson import ObjectId
 
 auth = Blueprint('auth',__name__)
 
 @auth.route('/login', methods=['GET','POST'])
 def login():
     if request.method == 'POST':
-        email  = request.form.get('email')
+        email = request.form.get('email')
         password = request.form.get('password')
         securityKey = request.form.get('security')
 
-        user = mongo.db.User.find_one({"email":email})
-        security = user["securityKey"]
+        user = User.find_by_email(email)
+        
         if user:
-            session['user_id'] = user["id"]
-            if check_password_hash(user["password"], password) == False:
-                flash('Incorrect password', category='error')
+            if check_password_hash(user['password'], password) == False:
+                flash("Incorrect password", category='error')
 
-            elif securityKey != security:
-                flash('Incorrect security key', category='error')
-            
-            else:
-                flash('Logged in successfully!', category='success')
+            elif user['security_key'] != securityKey:
+                flash("Incorrect security key", category='error')
+
+            elif user and check_password_hash(user['password'], password):
+                user = User(user['_id'], user['email'], user['password'], user['first_name'], user['last_name'], user['age'], user['address'], user['security_key'])
+                # Log in the user
                 login_user(user, remember=True)
-                return redirect(url_for("views.home"))
+                flash('Logged in successfully!', category='success')
+                return redirect(url_for('views.home'))
             
         else:
-            flash('Email does not exist', category='error')
+            flash('User not found. Please sign up', category='error')
+
     return render_template("login.html", user=current_user)
+
+@auth.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+        password2 = request.form.get('password2')
+        first_name = request.form.get('firstName')
+        last_name = ""
+        age = ""
+        address = ""
+        securityKey = request.form.get('security')
+        
+        existing_user = User.find_by_email(email)
+
+        if existing_user:
+            flash('Email already exists. Log in instead.', category='error')
+        else:
+
+            new_user = User(ObjectId(), email, generate_password_hash(password, method='sha256'), first_name, last_name, age, address, securityKey)
+            new_user.save()  # Save the new user to MongoDB
+            login_user(new_user, remember=True)
+            flash('Account created!', category='success')
+            return redirect(url_for('views.home'))
+
+    return render_template("sign_up.html", user=current_user)
 
 @auth.route('/logout')
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for("auth.login"))
-
-@auth.route('/signup', methods=['GET','POST'])
-def signup():
-    if request.method == 'POST':
-        email = request.form.get('email')
-        firstName = request.form.get('firstName')
-        password1 = request.form.get('password')
-        password2 = request.form.get('password2')
-        securityKey = request.form.get('security')
-
-        user = mongo.db.User.find_one({"email":email})
-        if user:
-            flash("Email already exists", category='error')
-
-        elif len(email)==0:
-            flash("Please enter an email", category='error')
-            
-        elif len(firstName)==0:
-            flash("Please enter your first name", category='error')
-            
-        elif len(password1)==0:
-            flash("Please enter a password", category='error')
-
-        elif len(password2)==0:
-            flash("Please confirm your password", category='error')
-
-        elif password1 != password2:
-            flash("The passwords don't match", category='error')
-
-        elif len(securityKey) == 0:
-            flash("Please enter a 4 digit security key", category='error')
-
-        else:
-            new_user = {"email": email, "firstName": firstName, "password": password1, "securityKey": securityKey}
-            mongo.db.User.insert_one(new_user)
-            login_user(new_user, remember=True)
-            flash("Account created", category='success')
-            return redirect(url_for('views.home'))
-        
-    return render_template("sign_up.html", user=current_user)    
+    return redirect(url_for('auth.login'))
 
 @auth.route('/renew', methods=['GET', 'POST'])
 def renew():
@@ -87,14 +76,14 @@ def renew():
         newPassword2 = request.form.get('newPassword2')
         securityKey = request.form.get('security')
 
-        user = mongo.db.User.find_one({"email":email})
-        security = user["securityKey"]
+        user = User.find_by_email(email)
         if user:
-            if(securityKey!=security):
+            if(securityKey!=user["security_key"]):
                 flash("Incorrect security key", category='error')
 
             elif newPassword1 == newPassword2:
-                user["securityKey"] = generate_password_hash(newPassword1, method='sha256')
+                newPassword = generate_password_hash(newPassword1, method='sha256')
+                User.update_password(user['_id'], newPassword)
                 flash("Password updated successfully", category='success')
                 return redirect(url_for('auth.login'))
             
